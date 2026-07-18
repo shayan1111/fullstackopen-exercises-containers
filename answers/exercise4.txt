@@ -1,0 +1,10 @@
+ docker start -i dazzling_borg
+root@ceb723ca4851:/# node -v
+v24.18.0
+root@ceb723ca4851:/# node /usr/src/app/index.js
+Hello World
+root@ceb723ca4851:/# exit
+exit
+
+
+# Couldn't capture the node downloading process due to an error in the terminal so i just made sure that it is running 
