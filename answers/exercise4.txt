@@ -7,4 +7,4 @@ root@ceb723ca4851:/# exit
 exit
 
 
-# Couldn't capture the node downloading process due to an error in the terminal so i just made sure that it is running 
+Wasn't able to capture the Node installation process due to a terminal error, so I just verified it's working correctly instead.
