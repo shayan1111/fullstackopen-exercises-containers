@@ -1,0 +1,70 @@
+ docker container ls
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS                                           NAMES
+38f5d19181e9   mongo     "docker-entrypoint.s…"   5 seconds ago   Up 2 seconds   0.0.0.0:3456->27017/tcp, [::]:3456->27017/tcp   todo-backend-mongo-1
+f25d6b8671cb   redis:7   "docker-entrypoint.s…"   11 months ago   Up 11 hours    127.0.0.1:6379->6379/tcp                        redis
+ docker exec -it  todo-backend-mongo-1 bash
+root@38f5d19181e9:/# mongosh -u root -p example
+Current Mongosh Log ID: 6a68b68cb424573188746c96
+Connecting to:          mongodb://<credentials>@127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.9.2
+Using MongoDB:          8.2.12
+Using Mongosh:          2.9.2
+For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
+To help improve our products, anonymous usage data is collected and sent to MongoDB periodically (https://www.mongodb.com/legal/privacy-policy).
+You can opt-out by running the disableTelemetry() command.
+------
+   The server generated these startup warnings when booting
+   2026-07-28T14:02:30.183+00:00: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine. See http://dochub.mongodb.org/core/prodnotes-filesystem
+   2026-07-28T14:02:31.726+00:00: Soft rlimits for open file descriptors too low
+   2026-07-28T14:02:31.727+00:00: For customers running the current memory allocator, we suggest changing the contents of the following sysfsFile
+   2026-07-28T14:02:31.727+00:00: For customers running the current memory allocator, we suggest changing the contents of the following sysfsFile
+   2026-07-28T14:02:31.727+00:00: We suggest setting the contents of sysfsFile to 0.
+   2026-07-28T14:02:31.728+00:00: We suggest setting swappiness to 0 or 1, as swapping can cause performance problems.
+------
+test> show dbs
+admin         100.00 KiB
+config         12.00 KiB
+local          40.00 KiB
+the_database   40.00 KiB
+test> use the_database
+switched to db the_database
+the_database> show collections
+todos
+the_database> db.todos.find({})
+[
+  {
+    _id: ObjectId('6a68b6743276f0c13437cbdc'),
+    text: 'Write code',
+    done: true
+  },
+  {
+    _id: ObjectId('6a68b6743276f0c13437cbdd'),
+    text: 'Learn about containers',
+    done: false
+  }
+]
+the_database> db.todos.insertOne({ text: "Increase the number of tools in my tool belt", done: false })
+{
+  acknowledged: true,
+  insertedId: ObjectId('6a68b6abb424573188746c97')
+}
+the_database> db.todos.find({})
+[
+  {
+    _id: ObjectId('6a68b6743276f0c13437cbdc'),
+    text: 'Write code',
+    done: true
+  },
+  {
+    _id: ObjectId('6a68b6743276f0c13437cbdd'),
+    text: 'Learn about containers',
+    done: false
+  },
+  {
+    _id: ObjectId('6a68b6abb424573188746c97'),
+    text: 'Increase the number of tools in my tool belt',
+    done: false
+  }
+]
+the_database> exit
+root@38f5d19181e9:/# exit
+exit
