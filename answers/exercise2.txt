@@ -1,5 +1,3 @@
-docker container run hello-world
-$: command not found
 Part 12 $ docker container run hello-world
 
 Hello from Docker!
