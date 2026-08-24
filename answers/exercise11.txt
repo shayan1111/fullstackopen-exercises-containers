@@ -1,0 +1,43 @@
+todo-backend $ docker exec -it todo-backend-redis-1 redis-cli
+127.0.0.1:6379> PING
+PONG
+127.0.0.1:6379> KEYS *
+1) "visits"
+127.0.0.1:6379> GET visits
+"8"
+127.0.0.1:6379> GET "visits"
+"8"
+127.0.0.1:6379> SET "visits" 9001
+OK
+127.0.0.1:6379> GET "visits"
+"9001"
+127.0.0.1:6379> GET added_todos
+"1"
+127.0.0.1:6379> SET added_todos 9001
+OK
+127.0.0.1:6379> GET added_todos
+"9001"
+
+POST http://localhost:3000/todos
+Content-Type: application/json
+
+{
+    "text": "Testing Redis for added_todos"
+}
+
+127.0.0.1:6379> GET added_todos
+"9002"
+127.0.0.1:6379> DEL added_todos
+(integer) 1
+127.0.0.1:6379> GET added_todos
+(nil)
+
+POST http://localhost:3000/todos
+Content-Type: application/json
+
+{
+    "text": "Testing after deleting Redis key"
+}
+
+127.0.0.1:6379> GET added_todos
+"1"

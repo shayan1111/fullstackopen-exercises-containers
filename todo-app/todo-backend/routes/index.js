@@ -1,17 +1,19 @@
 const express = require('express');
+const redis = require('../redis')
 const router = express.Router();
 
 const configs = require('../util/config')
 
-let visits = 0
-
 /* GET index data. */
-router.get('/', async (req, res) => {
-  visits++
+router.get('/statistics', async (req, res) => {
+  let currentVisits = await redis.get("visits")
+  
+  let newVisits = Number(currentVisits) + 1
+  
+  await redis.set("visits", newVisits)
 
   res.send({
-    ...configs,
-    visits
+    visits: newVisits
   });
 });
 
