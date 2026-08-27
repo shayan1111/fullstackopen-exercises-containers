@@ -4,14 +4,22 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  
+
   server: {
     host: '0.0.0.0',
+    allowedHosts: ['app', 'localhost'],
 
     watch: {
       usePolling: true,
     },
   },
+
+  // proxy: {
+  //   '/todos': {
+  //     target: 'http://host.docker.internal:3000',
+  //     changeOrigin: true,
+  //   },
+  // },
 
   test: {
     environment: 'jsdom',

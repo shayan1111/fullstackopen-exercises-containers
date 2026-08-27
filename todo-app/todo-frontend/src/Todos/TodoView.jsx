@@ -1,38 +1,45 @@
-import { useEffect, useState } from 'react'
-import axios from '../util/apiClient'
+import { useEffect, useState } from "react";
+import todoService from "../services/todos";
 
-import List from './List'
-import Form from './Form'
+import List from "./List";
+import Form from "./Form";
 
 const TodoView = () => {
-  const [todos, setTodos] = useState([])
+  const [todos, setTodos] = useState([]);
 
-  const refreshTodos = async () => {
-    const { data } = await axios.get('http://localhost:3000/todos')
-    setTodos(data)
-  }
+  useEffect( () => {
+    const loadTodos = async () => {
+      const data = await todoService.getTodos();
+      setTodos(data);
+    };
 
-  useEffect(() => {
-    refreshTodos()
-  }, [])
+    loadTodos();
+  }, []);
 
   const createTodo = async (todo) => {
-    const { data } = await axios.post('/todos', todo)
-    setTodos([...todos, data])
-  }
+    const data = await todoService.createTodos(todo);
+    setTodos([...todos, data]);
+  };
 
   const deleteTodo = async (todo) => {
-    await axios.delete(`/todos/${todo._id}`)
-    refreshTodos()
-  }
+    await todoService.deleteTodo(todo._id);
+    setTodos(todos.filter((t) => t._id !== todo._id));
+  };
 
   const completeTodo = async (todo) => {
-    await axios.put(`/todos/${todo._id}`, {
-      text: todo.text,
-      done: true
-    })
-    refreshTodos()
-  }
+    const todoCompletedObject = {
+      ...todo,
+      done: true,
+    };
+
+    const newCompletedTodo = await todoService.completeTodo(
+      todoCompletedObject._id,
+      todoCompletedObject,
+    );
+    setTodos(
+      todos.map((t) => (t._id === newCompletedTodo._id ? newCompletedTodo : t)),
+    );
+  };
 
   return (
     <>
@@ -40,7 +47,7 @@ const TodoView = () => {
       <Form createTodo={createTodo} />
       <List todos={todos} deleteTodo={deleteTodo} completeTodo={completeTodo} />
     </>
-  )
-}
+  );
+};
 
-export default TodoView
+export default TodoView;
