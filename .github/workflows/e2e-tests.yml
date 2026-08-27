@@ -72,7 +72,7 @@ jobs:
         working-directory: ./todo-app
         run: |
           echo "=== Backend logs ==="
-          docker compose logs backend
+          docker compose logs server
           echo "=== Frontend logs ==="
           docker compose logs app
           echo "=== Nginx logs ==="
