@@ -10,7 +10,7 @@ RUN --mount=type=cache,target=/root/.npm \
 
 COPY . .
 
-ENV VITE_BACKEND_URL=http://localhost:3000
+ENV VITE_BACKEND_URL=/api
 
 RUN npm run test
 
@@ -19,9 +19,9 @@ FROM test-stage as build-stage
 
 RUN npm run build
 
-# Run
-FROM build-stage as run-stage
+# Production stage
+FROM nginx:1.29-alpine as run-stage
 
-EXPOSE 5173
+COPY --from=build-stage /usr/src/app/dist /usr/share/nginx/html
 
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+EXPOSE 80
