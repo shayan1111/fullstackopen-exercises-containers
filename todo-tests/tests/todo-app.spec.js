@@ -90,7 +90,7 @@ test.describe('Backend API Tests', () => {
     });
     
     // Then check statistics
-    const response = await request.get('/api/statistics');
+    const response = await request.get('/api/todos/statistics');
     
     expect(response.status()).toBe(200);
     
