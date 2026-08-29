@@ -1,0 +1,40 @@
+services:
+  app:
+    image: frontend-dev
+    build:
+      context: ./frontend
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./frontend:/usr/src/app 
+      - /usr/src/app/node_modules
+  server:
+    image: backend-dev
+    build:
+      context: ./backend
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./backend:/usr/src/app 
+      - /usr/src/app/node_modules
+    environment:
+      MONGODB_URI: mongodb://root:example@mongo:27017/bloglist?authSource=admin
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo:8
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - mongo_data:/data/db
+  nginx:
+    image: nginx:1.29
+    volumes:
+      - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8080:80
+    depends_on:
+      - app
+      - server
+
+volumes:
+  mongo_data:

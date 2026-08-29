@@ -1,0 +1,14 @@
+GET http://localhost:3003/api/users
+
+###
+Post http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "username": "Ali",
+  "name": "Ali Rashidi",
+  "password": "RashidiAli"
+}
+
+###
+GET http://localhost:3003/api/blogs
